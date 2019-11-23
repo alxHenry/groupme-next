@@ -1,11 +1,31 @@
-import React, { FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Meta from '../components/Meta';
-import { User } from '../components/data/types';
+import { Group, User } from '../components/data/types';
 import Message from '../components/Message';
 import Grid from '@material-ui/core/Grid';
+import { getGroup } from '../components/data/api/getGroup';
 
-const Group: FC = () => {
+export interface GroupProps {
+  id: string;
+}
+
+const GroupPage: FC<GroupProps> = ({ id = '9817284' }) => {
+  const [group, setGroup] = useState<Group>();
+
+  const fetchGroup = async (id: string) => {
+    const group = await getGroup(id);
+    setGroup(group);
+  };
+
+  useEffect(() => {
+    fetchGroup(id);
+  }, [id]);
+
+  if (!group) {
+    return <div>Loading</div>;
+  }
+
   const mockUser: User = {
     name: 'Jacob Roney',
     avatarUrl:
@@ -26,7 +46,9 @@ const Group: FC = () => {
 
   return (
     <>
-      <Meta pageTitle="Group" />
+      <Meta pageTitle={group.name} />
+      <div>{group.name}</div>
+      <div>{group.description}</div>
       <Grid container spacing={2}>
         {messagesGridItems}
       </Grid>
@@ -34,4 +56,4 @@ const Group: FC = () => {
   );
 };
 
-export default Group;
+export default GroupPage;
