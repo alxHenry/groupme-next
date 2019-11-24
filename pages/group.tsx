@@ -46,15 +46,21 @@ const GroupPage: FC = () => {
   return (
     <>
       <Meta pageTitle={group.name} />
-      <GroupNav groups={groups} />
-      <Box fontSize={18} fontWeight={600}>
-        {group.name}
-      </Box>
-      <Box fontSize={12} color="#999999">
-        {group.description}
-      </Box>
-      <Grid container spacing={2}>
-        {messagesGridItems}
+      <Grid container>
+        <Grid item xs={1}>
+          <GroupNav groups={groups} />
+        </Grid>
+        <Grid item xs={11}>
+          <Box fontSize={18} fontWeight={600}>
+            {group.name}
+          </Box>
+          <Box fontSize={12} color="#999999">
+            {group.description}
+          </Box>
+          <Grid container spacing={2}>
+            {messagesGridItems}
+          </Grid>
+        </Grid>
       </Grid>
     </>
   );
