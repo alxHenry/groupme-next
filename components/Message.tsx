@@ -3,19 +3,20 @@ import { User } from './data/types';
 import { Avatar, Grid, Paper } from '@material-ui/core';
 
 export interface MessageProps {
-  sender: User;
+  name: string;
+  avatarUrl: string;
   messageBody: string;
 }
 
-const Message: FC<MessageProps> = ({ sender, messageBody }) => {
+const Message: FC<MessageProps> = ({ name, avatarUrl, messageBody }) => {
   return (
     <Paper>
       <Grid container>
         <Grid item xs={1}>
-          <Avatar src={sender.avatarUrl} alt={sender.name} />
+          <Avatar src={avatarUrl} alt={name} />
         </Grid>
         <Grid item xs={10}>
-          {sender.name}
+          {name}
         </Grid>
         <Grid item xs={12}>
           {messageBody}
