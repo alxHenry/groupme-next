@@ -1,12 +1,13 @@
 import React, { useState, FC, useEffect } from 'react';
 import Meta from '../components/Meta';
 import { Group, Message as MessageData } from '../components/data/types';
-import Message from '../components/Message';
 import { Box, Grid, Paper, Divider } from '@material-ui/core';
 import { getGroups } from '../components/data/api/getGroups';
 import { getMessages } from '../components/data/api/getMessages';
 import GroupNav from '../components/GroupNav';
 import { useRouter } from 'next/router';
+import { collapseMessagesBySender } from '../components/data/helpers/message';
+import MessageGroup from '../components/MessageGroup';
 
 const GroupPage: FC = () => {
   const router = useRouter();
@@ -32,15 +33,10 @@ const GroupPage: FC = () => {
   }
 
   const group = groups.find(item => item.id === groupId) || groups[0];
+  const collapsedMessages = collapseMessagesBySender(messages);
 
-  const messagesGridItems = messages.map(message => (
-    <Grid item xs={12} key={message.id}>
-      <Message
-        name={message.name}
-        avatarUrl={message.avatarUrl}
-        messageBody={message.text}
-      />
-    </Grid>
+  const messagesItems = collapsedMessages.map((messageGroup, index) => (
+    <MessageGroup key={index} messages={messageGroup} />
   ));
 
   return (
@@ -66,9 +62,7 @@ const GroupPage: FC = () => {
               {group.description}
             </Box>
             <Divider style={{ marginBottom: '20px' }} />
-            <Grid container spacing={3}>
-              {messagesGridItems}
-            </Grid>
+            {messagesItems}
           </Paper>
         </Grid>
       </Grid>
