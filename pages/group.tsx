@@ -1,19 +1,23 @@
-import React, { useState, FC, useEffect } from 'react';
+import React, { useState, FC, useEffect, useCallback } from 'react';
 import Meta from '../components/Meta';
 import { Group, Message as MessageData } from '../components/data/types';
 import { Box, Grid, Paper, Divider } from '@material-ui/core';
 import { getGroups } from '../components/data/api/getGroups';
-import { getMessages } from '../components/data/api/getMessages';
+import { getMessages } from '../components/data/api/messages';
 import GroupNav from '../components/GroupNav';
 import { useRouter } from 'next/router';
 import { collapseMessagesBySender } from '../components/data/helpers/message';
 import MessageGroup from '../components/MessageGroup';
+import Publisher from '../components/Publisher';
 
 const GroupPage: FC = () => {
   const router = useRouter();
   const [groups, setGroups] = useState<Group[]>([]);
   const [messages, setMessages] = useState<MessageData[]>([]);
   const groupId = router.query.id as string | undefined;
+  const appendNewMessage = useCallback((message: MessageData) => {
+    setMessages(prevMessages => [...prevMessages, message]);
+  }, []);
 
   const fetchGroupsAndMessages = async (groupId?: Group['id']) => {
     const fetchedGroups = await getGroups();
@@ -46,7 +50,7 @@ const GroupPage: FC = () => {
         <Grid item xs={1}>
           <GroupNav groups={groups} />
         </Grid>
-        <Grid item xs={11}>
+        <Grid item xs={10}>
           <Paper
             style={{
               paddingTop: '12px',
@@ -65,6 +69,12 @@ const GroupPage: FC = () => {
             {messagesItems}
           </Paper>
         </Grid>
+        {/* TODO: Fetch my user and store */}
+        <Publisher
+          groupId={group.id}
+          avatarUrl="https://i.groupme.com/935x500.jpeg.32e98a9f2f2842f6bb3b302fbef4391e.avatar"
+          onSuccess={appendNewMessage}
+        />
       </Grid>
     </>
   );

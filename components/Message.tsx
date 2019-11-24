@@ -26,7 +26,7 @@ const Message: FC<MessageProps> = ({
   ) : null;
 
   return (
-    <Grid container>
+    <Grid container alignItems="center">
       {header}
       <Grid item xs={1} />
       <Grid item xs={11}>
