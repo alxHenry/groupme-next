@@ -15,6 +15,7 @@ const Meta: FC<MetaProps> = ({ pageTitle }) => (
     <style jsx global>{`
       body {
         font-family: 'SegoeUI', sans-serif;
+        background: #f2f2f2;
       }
     `}</style>
   </>

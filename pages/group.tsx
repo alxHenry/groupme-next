@@ -2,7 +2,7 @@ import React, { useState, FC, useEffect } from 'react';
 import Meta from '../components/Meta';
 import { Group, Message as MessageData } from '../components/data/types';
 import Message from '../components/Message';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Paper, Divider } from '@material-ui/core';
 import { getGroups } from '../components/data/api/getGroups';
 import { getMessages } from '../components/data/api/getMessages';
 import GroupNav from '../components/GroupNav';
@@ -51,15 +51,25 @@ const GroupPage: FC = () => {
           <GroupNav groups={groups} />
         </Grid>
         <Grid item xs={11}>
-          <Box fontSize={18} fontWeight={600}>
-            {group.name}
-          </Box>
-          <Box fontSize={12} color="#999999">
-            {group.description}
-          </Box>
-          <Grid container spacing={2}>
-            {messagesGridItems}
-          </Grid>
+          <Paper
+            style={{
+              paddingTop: '12px',
+              paddingRight: '24px',
+              paddingBottom: '12px',
+              paddingLeft: '24px',
+            }}
+          >
+            <Box fontSize={18} fontWeight={600}>
+              {group.name}
+            </Box>
+            <Box fontSize={12} color="#999999" style={{ marginBottom: '8px' }}>
+              {group.description}
+            </Box>
+            <Divider style={{ marginBottom: '20px' }} />
+            <Grid container spacing={3}>
+              {messagesGridItems}
+            </Grid>
+          </Paper>
         </Grid>
       </Grid>
     </>
