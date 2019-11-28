@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Avatar, Box, Grid } from '@material-ui/core';
+import { Avatar, Box, Grid, Hidden } from '@material-ui/core';
 
 export interface MessageProps {
   name: string;
@@ -16,10 +16,12 @@ const Message: FC<MessageProps> = ({
 }) => {
   const header = withHeader ? (
     <>
-      <Grid item xs={1}>
-        <Avatar src={avatarUrl} alt={name} />
-      </Grid>
-      <Grid item xs={11}>
+      <Hidden xsDown>
+        <Grid item sm={1}>
+          <Avatar src={avatarUrl} alt={name} />
+        </Grid>
+      </Hidden>
+      <Grid item xs={12} sm={11}>
         <Box fontWeight={600}>{name}</Box>
       </Grid>
     </>

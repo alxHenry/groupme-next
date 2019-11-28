@@ -1,7 +1,7 @@
 import React, { useState, FC, useEffect, useCallback } from 'react';
 import Meta from '../components/Meta';
 import { Group, Message as MessageData } from '../components/data/types';
-import { Box, Grid, Paper, Divider } from '@material-ui/core';
+import { Box, Grid, Hidden, Paper, Divider } from '@material-ui/core';
 import { getGroups } from '../components/data/api/getGroups';
 import { getMessages } from '../components/data/api/messages';
 import GroupNav from '../components/GroupNav';
@@ -47,10 +47,12 @@ const GroupPage: FC = () => {
     <>
       <Meta pageTitle={group.name} />
       <Grid container>
-        <Grid item xs={1}>
-          <GroupNav groups={groups} />
-        </Grid>
-        <Grid item xs={10}>
+        <Hidden xsDown>
+          <Grid item sm={1}>
+            <GroupNav groups={groups} />
+          </Grid>
+        </Hidden>
+        <Grid item xs={12} sm={10}>
           <Paper
             style={{
               paddingTop: '12px',
@@ -69,6 +71,9 @@ const GroupPage: FC = () => {
             {messagesItems}
           </Paper>
         </Grid>
+        <Hidden xsDown>
+          <Grid item sm={1} />
+        </Hidden>
         {/* TODO: Fetch my user and store */}
         <Publisher
           groupId={group.id}

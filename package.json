@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.7.0",
+    "@material-ui/icons": "^4.5.1",
     "@types/uuid": "^3.4.6",
     "next": "9.1.4",
     "react": "16.12.0",
