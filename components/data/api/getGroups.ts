@@ -1,4 +1,4 @@
-import { Group } from '../types';
+import { GroupType } from '../types';
 
 export interface GetGroupsResponse {
   response: RawGroup[];
@@ -11,14 +11,14 @@ export interface RawGroup {
   description: string;
 }
 
-const normalizeRawGroup = (rawGroup: RawGroup): Group => ({
+const normalizeRawGroup = (rawGroup: RawGroup): GroupType => ({
   id: rawGroup.id,
   name: rawGroup.name,
   imageUrl: rawGroup.image_url,
   description: rawGroup.description,
 });
 
-export const getGroups = async (): Promise<Group[]> => {
+export const getGroups = async (): Promise<GroupType[]> => {
   const response = await fetch(
     `https://api.groupme.com/v3/groups?token=${process.env.groupMeToken}`
   );

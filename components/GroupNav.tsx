@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Group } from './data/types';
+import { GroupType } from './data/types';
 import {
   List,
   ListItem,
@@ -10,7 +10,7 @@ import {
 import Link from 'next/link';
 
 export interface GroupNavProps {
-  groups: Group[];
+  groups: GroupType[];
 }
 
 const GroupNav: FC<GroupNavProps> = ({ groups }) => {
@@ -19,7 +19,7 @@ const GroupNav: FC<GroupNavProps> = ({ groups }) => {
       <Tooltip title={group.name} placement="bottom-start">
         <ListItem button>
           <ListItemAvatar>
-            <Avatar alt={group.name} src={group.imageUrl} />
+            <Avatar alt={group.name} src={group.imageUrl || undefined} />
           </ListItemAvatar>
         </ListItem>
       </Tooltip>

@@ -1,4 +1,4 @@
-import { User, Group, Message } from '../types';
+import { User, GroupType, MessageType } from '../types';
 import { v4 as generateUuid } from 'uuid';
 
 export interface GetMessagesResponse {
@@ -16,7 +16,7 @@ export interface SendMessageResponse {
 
 export interface RawMessage {
   id: string;
-  text: string;
+  text: string | null;
   user_id: User['id'];
   name: string;
   avatar_url: string;
@@ -26,7 +26,7 @@ export interface RawMessage {
 
 const groupsUrl = 'https://api.groupme.com/v3/groups';
 
-const normalizeRawMessage = (rawMessage: RawMessage): Message => ({
+const normalizeRawMessage = (rawMessage: RawMessage): MessageType => ({
   id: rawMessage.id,
   text: rawMessage.text,
   sender: rawMessage.user_id,
@@ -36,7 +36,9 @@ const normalizeRawMessage = (rawMessage: RawMessage): Message => ({
   system: rawMessage.system,
 });
 
-export const getMessages = async (groupId: Group['id']): Promise<Message[]> => {
+export const getMessages = async (
+  groupId: GroupType['id']
+): Promise<MessageType[]> => {
   const response = await fetch(
     `${groupsUrl}/${groupId}/messages?limit=30&token=${process.env.groupMeToken}`
   );
@@ -45,9 +47,9 @@ export const getMessages = async (groupId: Group['id']): Promise<Message[]> => {
 };
 
 export const sendMessage = async (
-  groupId: Group['id'],
+  groupId: GroupType['id'],
   body: string
-): Promise<Message> => {
+): Promise<MessageType> => {
   const requestBody = {
     message: {
       source_guid: generateUuid(),

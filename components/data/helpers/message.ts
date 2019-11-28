@@ -1,7 +1,9 @@
-import { Message } from '../types';
+import { MessageModel } from '../types';
 
-export const collapseMessagesBySender = (messages: Message[]): Message[][] => {
-  const results: Message[][] = [[]];
+export const collapseMessagesBySender = (
+  messages: MessageModel[]
+): MessageModel[][] => {
+  const results: MessageModel[][] = [[]];
   if (!messages.length) {
     return [];
   }
