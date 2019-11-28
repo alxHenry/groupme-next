@@ -46,7 +46,15 @@ const GroupPage: FC = () => {
   return (
     <>
       <Meta pageTitle={group.name} />
-      <Grid container>
+      <Grid
+        container
+        style={{
+          position: 'fixed',
+          top: 0,
+          bottom: '100px',
+          overflowY: 'scroll',
+        }}
+      >
         <Hidden xsDown>
           <Grid item sm={1}>
             <GroupNav groups={groups} />
