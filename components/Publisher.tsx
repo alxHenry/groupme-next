@@ -21,8 +21,8 @@ const Publisher: FC<PublisherProps> = observer(({ groupId, avatarUrl }) => {
   const postMessage = useCallback(async () => {
     const newMessage = await sendMessage(groupId, body);
     setBody('');
-    store.addMessage(newMessage);
-  }, [groupId, body, store.addMessage]);
+    store.addMessages([newMessage]);
+  }, [groupId, body, store.addMessages]);
 
   return (
     <Card

@@ -1,41 +1,40 @@
 import React, { useState, FC, useEffect, useCallback } from 'react';
 import Meta from '../components/Meta';
-import { GroupType } from '../components/data/types';
+import { GroupModel } from '../components/data/types';
 import { Box, Grid, Hidden, Paper, Divider } from '@material-ui/core';
-import { getGroups } from '../components/data/api/getGroups';
-import { getMessages } from '../components/data/api/messages';
-import GroupNav from '../components/GroupNav';
-import { useRouter } from 'next/router';
 import { collapseMessagesBySender } from '../components/data/helpers/message';
 import MessageGroup from '../components/MessageGroup';
 import Publisher from '../components/Publisher';
 import { useStore } from './data/types/store';
 import { observer } from 'mobx-react-lite';
+import { useRouter } from 'next/router';
+import useInitialDataLoad from '../hooks/useInitialDataLoad';
+import GroupNav from './GroupNav';
 
 const GroupPage: FC = observer(() => {
   const router = useRouter();
-  const { messages, groups, setMessages, setGroups } = useStore();
-  const fetchGroupsAndMessages = useCallback(async () => {
-    const groupId = router.query.id as string | undefined;
-    const fetchedGroups = await getGroups();
-    const groupIdToFetchMessagesFrom = groupId || fetchedGroups[0].id;
-    const fetchedMessages = await getMessages(groupIdToFetchMessagesFrom);
+  const routeGroupId = router.query.id as string | undefined;
 
-    setGroups(fetchedGroups);
-    setMessages(fetchedMessages);
-  }, [router.query.id]);
+  const { groups } = useStore();
 
-  useEffect(() => {
-    fetchGroupsAndMessages();
-  }, [fetchGroupsAndMessages]);
+  useInitialDataLoad(routeGroupId);
 
-  if (!groups.length) {
+  if (!groups.size) {
     return <div>Loading</div>;
   }
 
-  const group = groups.find(item => item.id === router.query.id) || groups[0];
-  const collapsedMessages = collapseMessagesBySender(messages);
+  let group: GroupModel | undefined;
+  if (routeGroupId) {
+    group = groups.get(routeGroupId);
+  } else {
+    group = groups.values().next().value as GroupModel;
+  }
 
+  if (!group) {
+    throw new Error('Group is not in the store');
+  }
+
+  const collapsedMessages = collapseMessagesBySender(group.messages);
   const messagesItems = collapsedMessages.map((messageGroup, index) => (
     <MessageGroup key={index} messages={messageGroup} />
   ));
@@ -54,7 +53,7 @@ const GroupPage: FC = observer(() => {
       >
         <Hidden xsDown>
           <Grid item sm={1}>
-            <GroupNav groups={groups} />
+            <GroupNav />
           </Grid>
         </Hidden>
         <Grid item xs={12} sm={10}>

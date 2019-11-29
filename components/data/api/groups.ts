@@ -9,6 +9,10 @@ export interface RawGroup {
   name: string;
   image_url: string;
   description: string;
+  messages: {
+    count: number;
+    last_message_id: string;
+  };
 }
 
 const normalizeRawGroup = (rawGroup: RawGroup): GroupType => ({
@@ -16,6 +20,7 @@ const normalizeRawGroup = (rawGroup: RawGroup): GroupType => ({
   name: rawGroup.name,
   imageUrl: rawGroup.image_url,
   description: rawGroup.description,
+  messages: [],
 });
 
 export const getGroups = async (): Promise<GroupType[]> => {

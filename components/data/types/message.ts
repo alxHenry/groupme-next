@@ -15,7 +15,7 @@ export type MessageModel = Instance<typeof Message>;
 
 const Message = types
   .model('Message', {
-    id: types.string,
+    id: types.identifier,
     text: types.maybeNull(types.string),
     sender: types.string,
     name: types.string, // TODO: Normalize users and use the user id to look this up in store
