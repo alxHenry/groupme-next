@@ -1,16 +1,18 @@
 import React, { useCallback, useState, FC } from 'react';
-import { Group, Message } from './data/types';
+import { GroupType } from './data/types';
 import { sendMessage } from './data/api/messages';
 import { TextField, Avatar, Grid, Hidden, Fab, Card } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import { useStore } from './data/types/store';
+import { observer } from 'mobx-react-lite';
 
 export interface PublisherProps {
-  groupId: Group['id'];
+  groupId: GroupType['id'];
   avatarUrl: string;
-  onSuccess(message: Message): void;
 }
 
-const Publisher: FC<PublisherProps> = ({ groupId, avatarUrl, onSuccess }) => {
+const Publisher: FC<PublisherProps> = observer(({ groupId, avatarUrl }) => {
+  const store = useStore();
   const [body, setBody] = useState('');
   const updateBody = useCallback((event: any) => {
     const text = event.target.value;
@@ -19,8 +21,8 @@ const Publisher: FC<PublisherProps> = ({ groupId, avatarUrl, onSuccess }) => {
   const postMessage = useCallback(async () => {
     const newMessage = await sendMessage(groupId, body);
     setBody('');
-    onSuccess(newMessage);
-  }, [groupId, body, onSuccess]);
+    store.addMessages([newMessage]);
+  }, [groupId, body, store.addMessages]);
 
   return (
     <Card
@@ -62,6 +64,6 @@ const Publisher: FC<PublisherProps> = ({ groupId, avatarUrl, onSuccess }) => {
       </Grid>
     </Card>
   );
-};
+});
 
 export default Publisher;

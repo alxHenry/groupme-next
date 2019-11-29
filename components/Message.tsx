@@ -4,7 +4,7 @@ import { Avatar, Box, Grid, Hidden } from '@material-ui/core';
 export interface MessageProps {
   name: string;
   avatarUrl: string;
-  messageBody: string;
+  messageBody: string | null;
   withHeader?: boolean;
 }
 

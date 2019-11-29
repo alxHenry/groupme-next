@@ -1,10 +1,10 @@
 import React, { FC, ReactElement } from 'react';
-import { Message as MessageData } from './data/types';
+import { MessageType } from './data/types';
 import Message from './Message';
 import { Box } from '@material-ui/core';
 
 export interface MessageGroupProps {
-  messages: MessageData[];
+  messages: MessageType[];
 }
 
 const MessageGroup: FC<MessageGroupProps> = ({
